@@ -23,7 +23,19 @@ def get_tasks():
     return render_template("tasks.html", tasks=mongo.db.tasks.find())  # return everything in the db collection
 
 
+@app.route("/add_task", methods=["GET", "POST"])
+def add_task():
+    return render_template("add_task.html", categories=mongo.db.categories.find())
+
+
+@app.route("/insert_task", methods=["POST"])
+def insert_task():
+    tasks = mongo.db.tasks
+    tasks.insert_one(request.form.to_dict())  # insert the result of the POST request from submitted form and convert it to dictionary format
+    return redirect(url_for("get_tasks"))  # once new doc recorded, send back webpage to get_task function
+
+
 if __name__ == "__main__":
     app.run(host=os.getenv("IP"),
-            port=os.getenv("PORT"), 
+            port=int(os.getenv("PORT")), 
             debug=True)
