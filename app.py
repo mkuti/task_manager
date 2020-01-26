@@ -25,7 +25,7 @@ def get_tasks():
 
 @app.route("/add_task", methods=["GET", "POST"])
 def add_task():
-    return render_template("add_task.html", categories=mongo.db.categories.find())
+    return render_template("add_task.html", categories=mongo.db.categories.find())  # fetching categories collection to show in option dropdown menu
 
 
 @app.route("/insert_task", methods=["POST"])
