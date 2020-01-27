@@ -39,7 +39,7 @@ def insert_task():
 def edit_task(task_id):  # most precise way to find specific task from db is with id
     the_task = mongo.db.tasks.find({"_id": ObjectId(task_id)})  # assign task_id to variable using objectid to convert json data
     all__categories = mongo.db.categories.find()  # fetching categories collection to show in option dropdown menu
-    return render_template("edittask.html")  # once new doc recorded, send back webpage to get_task function
+    return render_template("edittask.html", task=the_task, categories=all_categories)  # include task and categories arguments so we can use them inside template
 
 
 if __name__ == "__main__":
