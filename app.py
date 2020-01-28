@@ -23,7 +23,7 @@ def get_tasks():
     return render_template("tasks.html", tasks=mongo.db.tasks.find())  # return everything in the db collection
 
 
-@app.route("/add_task", methods=["GET", "POST"])
+@app.route("/add_task")
 def add_task():
     return render_template("add_task.html", categories=mongo.db.categories.find())  # fetching categories collection to show in option dropdown menu
 
@@ -35,11 +35,12 @@ def insert_task():
     return redirect(url_for("get_tasks"))  # once new doc recorded, send back webpage to get_task function
 
 
-@app.route("/edit_task/<task_id>", methods=["POST"])  # route takes us to the task clicked to edit
-def edit_task(task_id):  # most precise way to find specific task from db is with id
-    the_task = mongo.db.tasks.find({"_id": ObjectId(task_id)})  # assign task_id to variable using objectid to convert json data
-    all__categories = mongo.db.categories.find()  # fetching categories collection to show in option dropdown menu
-    return render_template("edittask.html", task=the_task, categories=all_categories)  # include task and categories arguments so we can use them inside template
+@app.route('/edit_task/<task_id>')
+def edit_task(task_id):
+    the_task =  mongo.db.tasks.find_one({"_id": ObjectId(task_id)})
+    all_categories =  mongo.db.categories.find()
+    return render_template('editask.html', task=the_task,
+                           categories=all_categories)
 
 
 if __name__ == "__main__":

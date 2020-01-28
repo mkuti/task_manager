@@ -1,16 +1,19 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h3>Add Task</h3>
+<h3>Edit Task</h3>
 
 <div class="row">
-<form action="{{url_for('insert_task')}}" method="POST" class="col s12">
+<form action="{{url_for('add_task', task_id=task._id)}}" method="POST" class="col s12">
         <div class="row">
             <div class="input-field col s12">
                 <i class="material-icons prefix">poll</i>
                 <select id="category" name="category_name">
                     <option value="" disabled selected>Choose your option</option>
                     {% for cat in categories %}
+                    {% if cat.category.name == task.category.name %}
+                    <option value="{{cat.category_name}}">selected{{cat.category_name}}</option>
+                    {{% else %}}
                     <option value="{{cat.category_name}}">{{cat.category_name}}</option>
                     {% endfor %}
                 </select>
@@ -20,14 +23,14 @@
         <div class="row">
             <div class="input-field col s12">
                 <i class="material-icons prefix">assignment</i>
-                <input id="task_name" name="task_name" type="text" class="validate">
+                <input id="task_name" name="task_name" type="text" class="validate" value="{{task.task_name}}">
                 <label>Task Name</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
                 <i class="material-icons prefix">subject</i>
-                <textarea id="task_description" name="task_description" class="materialize-textarea"></textarea>
+                <textarea id="task_description" name="task_description" class="materialize-textarea" value="{{task.task_description}}"></textarea>
                 <label>Task Description</label>
             </div>
         </div>
@@ -41,7 +44,10 @@
         <div class="row">
             <div class="switch">
                 <label>
-                    <input type="checkbox" id="is_urgent" name="is_urgent">
+                    {% if task.is_urgent == True %}
+                    <input type="checkbox" id="is_urgent" name="is_urgent" checked>
+                    {{ else }}
+                    <input type="checkbox" id="is_urgent" name="is_urgent" checked>
                     <span class="lever"></span>
                     Is Urgent
                 </label>
